@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+option go_package = "./domain";
+
+service UserService {
+    rpc AddUser(AddUserRequest) returns (AddUserResponse);
+}
+
+message AddUserRequest {
+    string username = 1;
+    string password = 2;
+}
+
+message AddUserResponse {
+    User user = 1;
+}
+
+message User {
+    string username = 1; 
+    string password = 2; 
+    int32 height_in_cm = 3;
+    float weight = 4; 
+}

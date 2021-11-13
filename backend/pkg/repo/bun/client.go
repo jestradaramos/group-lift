@@ -9,7 +9,7 @@ import (
 )
 
 type DB struct {
-	db *bun.DB
+	DB *bun.DB
 }
 
 func InitBunDB(dsn string) *DB {

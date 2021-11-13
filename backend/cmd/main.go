@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net"
 
@@ -11,7 +12,7 @@ import (
 )
 
 func main() {
-	lis, err := net.Listen("tcp", "localhost:80")
+	lis, err := net.Listen("tcp", "localhost:81")
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
@@ -19,8 +20,15 @@ func main() {
 
 	grpcServer := grpc.NewServer(opts...)
 
-	db := bun.InitBunDB("string")
+	// Default postgres creds for now
+	db := bun.InitBunDB("postgresql://postgres:postgres@localhost:5432/test?sslmode=disable")
 
 	domain.RegisterUserServiceServer(grpcServer, user.NewUserServiceServer(db))
-	grpcServer.Serve(lis)
+	fmt.Print(grpcServer.GetServiceInfo())
+
+	err = grpcServer.Serve(lis)
+	if err != nil {
+		fmt.Print("It Brokey no Workey")
+		grpcServer.Stop()
+	}
 }

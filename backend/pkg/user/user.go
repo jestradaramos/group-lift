@@ -2,6 +2,7 @@ package user
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/jestradaramos/group-lift/backend/pkg/domain"
 	"github.com/jestradaramos/group-lift/backend/pkg/repo"
@@ -21,6 +22,7 @@ func NewUserServiceServer(db *bun.DB) *UserService {
 }
 
 func (u UserService) AddUser(ctx context.Context, req *domain.AddUserRequest) (*domain.AddUserResponse, error) {
+	fmt.Println("We made it in here")
 	user := &models.User{Username: req.Username, Password: req.Password}
 	_, err := u.DB.AddUser(context.Background(), user)
 	if err != nil {

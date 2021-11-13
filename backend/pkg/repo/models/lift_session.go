@@ -5,7 +5,7 @@ import "time"
 type LiftSession struct {
 	Date time.Time
 	ID   string  `bun:"default:gen_random_uuid()"`
-	Lift []*Lift `bun:"rel:has-many,join:id=`
+	Lift []*Lift `bun:"rel:has-many,join:id=session_id"`
 }
 
 type Lift struct {

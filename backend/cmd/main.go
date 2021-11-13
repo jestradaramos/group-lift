@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"net"
@@ -23,7 +24,8 @@ func main() {
 
 	// Default postgres creds for now
 	db := bun.InitBunDB("postgresql://postgres:postgres@localhost:5432/test?sslmode=disable")
-	// db.CreateLiftTables(context.Background())
+	db.CreateUserTable(context.Background())
+	db.CreateLiftTables(context.Background())
 
 	domain.RegisterUserServiceServer(grpcServer, user.NewUserServiceServer(db))
 	domain.RegisterLiftSessionServiceServer(grpcServer, session.NewSessionServiceServer(db))

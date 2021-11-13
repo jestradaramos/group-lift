@@ -23,8 +23,9 @@ func NewSessionServiceServer(db *bun.DB) *LiftSessionService {
 
 func (s LiftSessionService) AddSession(ctx context.Context, req *domain.AddSessionRequest) (*domain.AddSessionResponse, error) {
 	liftSession := &models.LiftSession{
-		Date: time.Now(),
-		Lift: []*models.Lift{},
+		Date:   time.Now(),
+		UserID: req.UserId,
+		Lift:   []*models.Lift{},
 	}
 
 	liftSession, err := s.DB.AddLiftSession(context.Background(), liftSession)
@@ -61,12 +62,27 @@ func (s LiftSessionService) GetSession(ctx context.Context, req *domain.GetSessi
 	}
 	domainLifts := liftsFromModelToDomain(liftSession.Lift)
 	res := &domain.GetSessionResponse{
-		Id:    liftSession.ID,
-		Date:  liftSession.Date.String(),
-		Lifts: domainLifts,
+		Id:     liftSession.ID,
+		Date:   liftSession.Date.String(),
+		UserId: liftSession.UserID,
+		Lifts:  domainLifts,
 	}
 	return res, nil
 }
+
+func (s LiftSessionService) ListSessionsByUser(ctx context.Context, req *domain.ListSessionsByUserRequest) (*domain.ListSessionByUserResponse, error) {
+	sessions, err := s.DB.ListLiftSessionsByUser(ctx, req.UserId)
+	if err != nil {
+		return nil, err
+	}
+	domainSessions := sessionsFromModelToDomain(sessions)
+	res := &domain.ListSessionByUserResponse{
+		UserId:   req.UserId,
+		Sessions: domainSessions,
+	}
+	return res, nil
+}
+
 func sessionFromModelToDomain(liftSession *models.LiftSession) *domain.Session {
 	domainUser := domain.Session{
 		Date:   liftSession.Date.Format(time.UnixDate),
@@ -74,6 +90,21 @@ func sessionFromModelToDomain(liftSession *models.LiftSession) *domain.Session {
 	}
 
 	return &domainUser
+}
+
+func sessionsFromModelToDomain(sessions []*models.LiftSession) []*domain.Session {
+	domainSessions := make([]*domain.Session, 0)
+	for _, s := range sessions {
+		domainLifts := liftsFromModelToDomain(s.Lift)
+		session := domain.Session{
+			Date:   s.Date.String(),
+			SeshId: s.ID,
+			UserId: s.UserID,
+			Lifts:  domainLifts,
+		}
+		domainSessions = append(domainSessions, &session)
+	}
+	return domainSessions
 }
 
 func liftFromModelToDomain(lift *models.Lift) *domain.Lift {

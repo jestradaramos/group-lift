@@ -6,6 +6,7 @@ service LiftSessionService {
     rpc addSession(AddSessionRequest) returns (AddSessionResponse);
     rpc addLift(AddLiftRequest) returns (AddLiftResponse);
     rpc GetSession(GetSessionRequest) returns (GetSessionResponse);
+    rpc ListSessionsByUser(ListSessionsByUserRequest) returns (ListSessionByUserResponse);
     // rpc addRun(AddRunRequest) returns (AddRunResponse);
 
 }
@@ -36,7 +37,9 @@ message Lift {
 
 }
 
-message AddSessionRequest {}
+message AddSessionRequest {
+    string user_id = 1;
+}
 
 message AddSessionResponse {
     Session Session = 1;
@@ -45,6 +48,8 @@ message AddSessionResponse {
 message Session {
     string date = 1;
     string sesh_id = 2;
+    string user_id = 3;
+    repeated Lift lifts = 4;
 }
 
 message GetSessionRequest {
@@ -53,5 +58,15 @@ message GetSessionRequest {
 message GetSessionResponse {
     string id = 1;
     string date = 2;
-    repeated Lift lifts = 3;
+    string user_id = 3;
+    repeated Lift lifts = 4;
+}
+
+message ListSessionsByUserRequest {
+    string user_id = 1;
+}
+
+message ListSessionByUserResponse {
+    string user_id = 1;
+    repeated Session sessions = 2;
 }

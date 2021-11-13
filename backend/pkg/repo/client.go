@@ -11,4 +11,5 @@ type Repository interface {
 	AddLiftSession(ctx context.Context, user *models.LiftSession) (*models.LiftSession, error)
 	AddLift(ctx context.Context, lift *models.Lift) (*models.Lift, error)
 	GetLiftSession(ctx context.Context, id string) (*models.LiftSession, error)
+	ListLiftSessionsByUser(ctx context.Context, userID string) ([]*models.LiftSession, error)
 }

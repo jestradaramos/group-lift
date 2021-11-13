@@ -63,3 +63,18 @@ func (d *DB) GetLiftSession(ctx context.Context, id string) (*models.LiftSession
 
 	return liftSession, nil
 }
+
+func (d *DB) ListLiftSessionsByUser(ctx context.Context, userID string) ([]*models.LiftSession, error) {
+	sessions := make([]*models.LiftSession, 0)
+	err := d.DB.NewSelect().
+		Model(&sessions).
+		Relation("Lift").
+		Where("user_id = ?", userID).
+		Scan(ctx)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return sessions, nil
+}

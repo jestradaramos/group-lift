@@ -36,8 +36,11 @@ func (u UserService) AddUser(ctx context.Context, req *domain.AddUserRequest) (*
 
 func fromModelToDomain(user *models.User) *domain.User {
 	domainUser := domain.User{
-		Username: user.Username,
-		Password: user.Password,
+		Id:         user.ID,
+		Username:   user.Username,
+		Password:   user.Password,
+		HeightInCm: 0,
+		Weight:     0,
 	}
 
 	return &domainUser

@@ -20,6 +20,7 @@ const _ = grpc.SupportPackageIsVersion7
 type LiftSessionServiceClient interface {
 	AddSession(ctx context.Context, in *AddSessionRequest, opts ...grpc.CallOption) (*AddSessionResponse, error)
 	AddLift(ctx context.Context, in *AddLiftRequest, opts ...grpc.CallOption) (*AddLiftResponse, error)
+	GetSession(ctx context.Context, in *GetSessionRequest, opts ...grpc.CallOption) (*GetSessionResponse, error)
 }
 
 type liftSessionServiceClient struct {
@@ -48,12 +49,22 @@ func (c *liftSessionServiceClient) AddLift(ctx context.Context, in *AddLiftReque
 	return out, nil
 }
 
+func (c *liftSessionServiceClient) GetSession(ctx context.Context, in *GetSessionRequest, opts ...grpc.CallOption) (*GetSessionResponse, error) {
+	out := new(GetSessionResponse)
+	err := c.cc.Invoke(ctx, "/LiftSessionService/GetSession", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // LiftSessionServiceServer is the server API for LiftSessionService service.
 // All implementations must embed UnimplementedLiftSessionServiceServer
 // for forward compatibility
 type LiftSessionServiceServer interface {
 	AddSession(context.Context, *AddSessionRequest) (*AddSessionResponse, error)
 	AddLift(context.Context, *AddLiftRequest) (*AddLiftResponse, error)
+	GetSession(context.Context, *GetSessionRequest) (*GetSessionResponse, error)
 	mustEmbedUnimplementedLiftSessionServiceServer()
 }
 
@@ -66,6 +77,9 @@ func (UnimplementedLiftSessionServiceServer) AddSession(context.Context, *AddSes
 }
 func (UnimplementedLiftSessionServiceServer) AddLift(context.Context, *AddLiftRequest) (*AddLiftResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddLift not implemented")
+}
+func (UnimplementedLiftSessionServiceServer) GetSession(context.Context, *GetSessionRequest) (*GetSessionResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetSession not implemented")
 }
 func (UnimplementedLiftSessionServiceServer) mustEmbedUnimplementedLiftSessionServiceServer() {}
 
@@ -116,6 +130,24 @@ func _LiftSessionService_AddLift_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
+func _LiftSessionService_GetSession_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetSessionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(LiftSessionServiceServer).GetSession(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/LiftSessionService/GetSession",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(LiftSessionServiceServer).GetSession(ctx, req.(*GetSessionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // LiftSessionService_ServiceDesc is the grpc.ServiceDesc for LiftSessionService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -130,6 +162,10 @@ var LiftSessionService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "addLift",
 			Handler:    _LiftSessionService_AddLift_Handler,
+		},
+		{
+			MethodName: "GetSession",
+			Handler:    _LiftSessionService_GetSession_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

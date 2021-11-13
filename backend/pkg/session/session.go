@@ -54,6 +54,19 @@ func (s LiftSessionService) AddLift(ctx context.Context, req *domain.AddLiftRequ
 	return res, nil
 }
 
+func (s LiftSessionService) GetSession(ctx context.Context, req *domain.GetSessionRequest) (*domain.GetSessionResponse, error) {
+	liftSession, err := s.DB.GetLiftSession(ctx, req.Id)
+	if err != nil {
+		return nil, err
+	}
+	domainLifts := liftsFromModelToDomain(liftSession.Lift)
+	res := &domain.GetSessionResponse{
+		Id:    liftSession.ID,
+		Date:  liftSession.Date.String(),
+		Lifts: domainLifts,
+	}
+	return res, nil
+}
 func sessionFromModelToDomain(liftSession *models.LiftSession) *domain.Session {
 	domainUser := domain.Session{
 		Date:   liftSession.Date.Format(time.UnixDate),
@@ -72,4 +85,18 @@ func liftFromModelToDomain(lift *models.Lift) *domain.Lift {
 	}
 
 	return &domainUser
+}
+
+func liftsFromModelToDomain(lifts []*models.Lift) []*domain.Lift {
+	domainLifts := make([]*domain.Lift, 0)
+	for _, l := range lifts {
+		lift := domain.Lift{
+			Lift:   l.Lift,
+			Weight: int64(l.Weight),
+			Feel:   l.Feel,
+		}
+		domainLifts = append(domainLifts, &lift)
+	}
+
+	return domainLifts
 }

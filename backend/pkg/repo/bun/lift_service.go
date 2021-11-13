@@ -48,3 +48,18 @@ func (d *DB) AddLift(ctx context.Context, lift *models.Lift) (*models.Lift, erro
 
 	return lift, nil
 }
+
+func (d *DB) GetLiftSession(ctx context.Context, id string) (*models.LiftSession, error) {
+	liftSession := &models.LiftSession{}
+	err := d.DB.NewSelect().
+		Model(liftSession).
+		Relation("Lift").
+		Where("id = ?", id).
+		Scan(ctx)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return liftSession, nil
+}

@@ -72,107 +72,6 @@ func (AddLiftRequestFeeler) EnumDescriptor() ([]byte, []int) {
 	return file_API_session_proto_rawDescGZIP(), []int{0, 0}
 }
 
-type AddRunRequestFeeler int32
-
-const (
-	AddRunRequest_UNKNOWN AddRunRequestFeeler = 0
-	AddRunRequest_BAD     AddRunRequestFeeler = 1
-	AddRunRequest_OK      AddRunRequestFeeler = 2
-	AddRunRequest_GOOD    AddRunRequestFeeler = 3
-)
-
-// Enum value maps for AddRunRequestFeeler.
-var (
-	AddRunRequestFeeler_name = map[int32]string{
-		0: "UNKNOWN",
-		1: "BAD",
-		2: "OK",
-		3: "GOOD",
-	}
-	AddRunRequestFeeler_value = map[string]int32{
-		"UNKNOWN": 0,
-		"BAD":     1,
-		"OK":      2,
-		"GOOD":    3,
-	}
-)
-
-func (x AddRunRequestFeeler) Enum() *AddRunRequestFeeler {
-	p := new(AddRunRequestFeeler)
-	*p = x
-	return p
-}
-
-func (x AddRunRequestFeeler) String() string {
-	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
-}
-
-func (AddRunRequestFeeler) Descriptor() protoreflect.EnumDescriptor {
-	return file_API_session_proto_enumTypes[1].Descriptor()
-}
-
-func (AddRunRequestFeeler) Type() protoreflect.EnumType {
-	return &file_API_session_proto_enumTypes[1]
-}
-
-func (x AddRunRequestFeeler) Number() protoreflect.EnumNumber {
-	return protoreflect.EnumNumber(x)
-}
-
-// Deprecated: Use AddRunRequestFeeler.Descriptor instead.
-func (AddRunRequestFeeler) EnumDescriptor() ([]byte, []int) {
-	return file_API_session_proto_rawDescGZIP(), []int{2, 0}
-}
-
-type AddSessionRequest_SessionType int32
-
-const (
-	AddSessionRequest_UNKNOWN AddSessionRequest_SessionType = 0
-	AddSessionRequest_LIFT    AddSessionRequest_SessionType = 1
-	AddSessionRequest_RUN     AddSessionRequest_SessionType = 2
-)
-
-// Enum value maps for AddSessionRequest_SessionType.
-var (
-	AddSessionRequest_SessionType_name = map[int32]string{
-		0: "UNKNOWN",
-		1: "LIFT",
-		2: "RUN",
-	}
-	AddSessionRequest_SessionType_value = map[string]int32{
-		"UNKNOWN": 0,
-		"LIFT":    1,
-		"RUN":     2,
-	}
-)
-
-func (x AddSessionRequest_SessionType) Enum() *AddSessionRequest_SessionType {
-	p := new(AddSessionRequest_SessionType)
-	*p = x
-	return p
-}
-
-func (x AddSessionRequest_SessionType) String() string {
-	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
-}
-
-func (AddSessionRequest_SessionType) Descriptor() protoreflect.EnumDescriptor {
-	return file_API_session_proto_enumTypes[2].Descriptor()
-}
-
-func (AddSessionRequest_SessionType) Type() protoreflect.EnumType {
-	return &file_API_session_proto_enumTypes[2]
-}
-
-func (x AddSessionRequest_SessionType) Number() protoreflect.EnumNumber {
-	return protoreflect.EnumNumber(x)
-}
-
-// Deprecated: Use AddSessionRequest_SessionType.Descriptor instead.
-func (AddSessionRequest_SessionType) EnumDescriptor() ([]byte, []int) {
-	return file_API_session_proto_rawDescGZIP(), []int{4, 0}
-}
-
 type AddLiftRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -180,7 +79,7 @@ type AddLiftRequest struct {
 
 	SessionId string               `protobuf:"bytes,1,opt,name=session_id,json=sessionId,proto3" json:"session_id,omitempty"`
 	Workout   string               `protobuf:"bytes,2,opt,name=workout,proto3" json:"workout,omitempty"`
-	Weight    string               `protobuf:"bytes,3,opt,name=weight,proto3" json:"weight,omitempty"`
+	Weight    int64                `protobuf:"varint,3,opt,name=weight,proto3" json:"weight,omitempty"`
 	Feel      AddLiftRequestFeeler `protobuf:"varint,4,opt,name=feel,proto3,enum=AddLiftRequestFeeler" json:"feel,omitempty"`
 }
 
@@ -230,11 +129,11 @@ func (x *AddLiftRequest) GetWorkout() string {
 	return ""
 }
 
-func (x *AddLiftRequest) GetWeight() string {
+func (x *AddLiftRequest) GetWeight() int64 {
 	if x != nil {
 		return x.Weight
 	}
-	return ""
+	return 0
 }
 
 func (x *AddLiftRequest) GetFeel() AddLiftRequestFeeler {
@@ -248,6 +147,8 @@ type AddLiftResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
+
+	Lift *Lift `protobuf:"bytes,1,opt,name=lift,proto3" json:"lift,omitempty"`
 }
 
 func (x *AddLiftResponse) Reset() {
@@ -282,19 +183,26 @@ func (*AddLiftResponse) Descriptor() ([]byte, []int) {
 	return file_API_session_proto_rawDescGZIP(), []int{1}
 }
 
-type AddRunRequest struct {
+func (x *AddLiftResponse) GetLift() *Lift {
+	if x != nil {
+		return x.Lift
+	}
+	return nil
+}
+
+type Lift struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	SessionId string              `protobuf:"bytes,1,opt,name=session_id,json=sessionId,proto3" json:"session_id,omitempty"`
-	Time      string              `protobuf:"bytes,2,opt,name=time,proto3" json:"time,omitempty"`
-	Distance  string              `protobuf:"bytes,3,opt,name=distance,proto3" json:"distance,omitempty"`
-	Feel      AddRunRequestFeeler `protobuf:"varint,4,opt,name=feel,proto3,enum=AddRunRequestFeeler" json:"feel,omitempty"`
+	SessionId string `protobuf:"bytes,1,opt,name=session_id,json=sessionId,proto3" json:"session_id,omitempty"`
+	Lift      string `protobuf:"bytes,2,opt,name=lift,proto3" json:"lift,omitempty"`
+	Weight    int64  `protobuf:"varint,3,opt,name=weight,proto3" json:"weight,omitempty"`
+	Feel      string `protobuf:"bytes,4,opt,name=feel,proto3" json:"feel,omitempty"`
 }
 
-func (x *AddRunRequest) Reset() {
-	*x = AddRunRequest{}
+func (x *Lift) Reset() {
+	*x = Lift{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_API_session_proto_msgTypes[2]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -302,13 +210,13 @@ func (x *AddRunRequest) Reset() {
 	}
 }
 
-func (x *AddRunRequest) String() string {
+func (x *Lift) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*AddRunRequest) ProtoMessage() {}
+func (*Lift) ProtoMessage() {}
 
-func (x *AddRunRequest) ProtoReflect() protoreflect.Message {
+func (x *Lift) ProtoReflect() protoreflect.Message {
 	mi := &file_API_session_proto_msgTypes[2]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -320,75 +228,37 @@ func (x *AddRunRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use AddRunRequest.ProtoReflect.Descriptor instead.
-func (*AddRunRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use Lift.ProtoReflect.Descriptor instead.
+func (*Lift) Descriptor() ([]byte, []int) {
 	return file_API_session_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *AddRunRequest) GetSessionId() string {
+func (x *Lift) GetSessionId() string {
 	if x != nil {
 		return x.SessionId
 	}
 	return ""
 }
 
-func (x *AddRunRequest) GetTime() string {
+func (x *Lift) GetLift() string {
 	if x != nil {
-		return x.Time
+		return x.Lift
 	}
 	return ""
 }
 
-func (x *AddRunRequest) GetDistance() string {
+func (x *Lift) GetWeight() int64 {
 	if x != nil {
-		return x.Distance
+		return x.Weight
 	}
-	return ""
+	return 0
 }
 
-func (x *AddRunRequest) GetFeel() AddRunRequestFeeler {
+func (x *Lift) GetFeel() string {
 	if x != nil {
 		return x.Feel
 	}
-	return AddRunRequest_UNKNOWN
-}
-
-type AddRunResponse struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-}
-
-func (x *AddRunResponse) Reset() {
-	*x = AddRunResponse{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_API_session_proto_msgTypes[3]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *AddRunResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*AddRunResponse) ProtoMessage() {}
-
-func (x *AddRunResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_API_session_proto_msgTypes[3]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use AddRunResponse.ProtoReflect.Descriptor instead.
-func (*AddRunResponse) Descriptor() ([]byte, []int) {
-	return file_API_session_proto_rawDescGZIP(), []int{3}
+	return ""
 }
 
 type AddSessionRequest struct {
@@ -396,13 +266,13 @@ type AddSessionRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Type AddSessionRequest_SessionType `protobuf:"varint,1,opt,name=type,proto3,enum=AddSessionRequest_SessionType" json:"type,omitempty"`
+	UserId string `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
 }
 
 func (x *AddSessionRequest) Reset() {
 	*x = AddSessionRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_API_session_proto_msgTypes[4]
+		mi := &file_API_session_proto_msgTypes[3]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -415,7 +285,7 @@ func (x *AddSessionRequest) String() string {
 func (*AddSessionRequest) ProtoMessage() {}
 
 func (x *AddSessionRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_API_session_proto_msgTypes[4]
+	mi := &file_API_session_proto_msgTypes[3]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -428,26 +298,28 @@ func (x *AddSessionRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AddSessionRequest.ProtoReflect.Descriptor instead.
 func (*AddSessionRequest) Descriptor() ([]byte, []int) {
-	return file_API_session_proto_rawDescGZIP(), []int{4}
+	return file_API_session_proto_rawDescGZIP(), []int{3}
 }
 
-func (x *AddSessionRequest) GetType() AddSessionRequest_SessionType {
+func (x *AddSessionRequest) GetUserId() string {
 	if x != nil {
-		return x.Type
+		return x.UserId
 	}
-	return AddSessionRequest_UNKNOWN
+	return ""
 }
 
 type AddSessionResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
+
+	Session *Session `protobuf:"bytes,1,opt,name=Session,proto3" json:"Session,omitempty"`
 }
 
 func (x *AddSessionResponse) Reset() {
 	*x = AddSessionResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_API_session_proto_msgTypes[5]
+		mi := &file_API_session_proto_msgTypes[4]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -460,7 +332,7 @@ func (x *AddSessionResponse) String() string {
 func (*AddSessionResponse) ProtoMessage() {}
 
 func (x *AddSessionResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_API_session_proto_msgTypes[5]
+	mi := &file_API_session_proto_msgTypes[4]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -473,7 +345,14 @@ func (x *AddSessionResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AddSessionResponse.ProtoReflect.Descriptor instead.
 func (*AddSessionResponse) Descriptor() ([]byte, []int) {
-	return file_API_session_proto_rawDescGZIP(), []int{5}
+	return file_API_session_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *AddSessionResponse) GetSession() *Session {
+	if x != nil {
+		return x.Session
+	}
+	return nil
 }
 
 type Session struct {
@@ -481,14 +360,16 @@ type Session struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Date   string `protobuf:"bytes,1,opt,name=date,proto3" json:"date,omitempty"`
-	SeshId string `protobuf:"bytes,2,opt,name=sesh_id,json=seshId,proto3" json:"sesh_id,omitempty"`
+	Date   string  `protobuf:"bytes,1,opt,name=date,proto3" json:"date,omitempty"`
+	SeshId string  `protobuf:"bytes,2,opt,name=sesh_id,json=seshId,proto3" json:"sesh_id,omitempty"`
+	UserId string  `protobuf:"bytes,3,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	Lifts  []*Lift `protobuf:"bytes,4,rep,name=lifts,proto3" json:"lifts,omitempty"`
 }
 
 func (x *Session) Reset() {
 	*x = Session{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_API_session_proto_msgTypes[6]
+		mi := &file_API_session_proto_msgTypes[5]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -501,7 +382,7 @@ func (x *Session) String() string {
 func (*Session) ProtoMessage() {}
 
 func (x *Session) ProtoReflect() protoreflect.Message {
-	mi := &file_API_session_proto_msgTypes[6]
+	mi := &file_API_session_proto_msgTypes[5]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -514,7 +395,7 @@ func (x *Session) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Session.ProtoReflect.Descriptor instead.
 func (*Session) Descriptor() ([]byte, []int) {
-	return file_API_session_proto_rawDescGZIP(), []int{6}
+	return file_API_session_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *Session) GetDate() string {
@@ -531,6 +412,240 @@ func (x *Session) GetSeshId() string {
 	return ""
 }
 
+func (x *Session) GetUserId() string {
+	if x != nil {
+		return x.UserId
+	}
+	return ""
+}
+
+func (x *Session) GetLifts() []*Lift {
+	if x != nil {
+		return x.Lifts
+	}
+	return nil
+}
+
+type GetSessionRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Id string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+}
+
+func (x *GetSessionRequest) Reset() {
+	*x = GetSessionRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_API_session_proto_msgTypes[6]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetSessionRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetSessionRequest) ProtoMessage() {}
+
+func (x *GetSessionRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_API_session_proto_msgTypes[6]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetSessionRequest.ProtoReflect.Descriptor instead.
+func (*GetSessionRequest) Descriptor() ([]byte, []int) {
+	return file_API_session_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *GetSessionRequest) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+type GetSessionResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Id     string  `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Date   string  `protobuf:"bytes,2,opt,name=date,proto3" json:"date,omitempty"`
+	UserId string  `protobuf:"bytes,3,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	Lifts  []*Lift `protobuf:"bytes,4,rep,name=lifts,proto3" json:"lifts,omitempty"`
+}
+
+func (x *GetSessionResponse) Reset() {
+	*x = GetSessionResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_API_session_proto_msgTypes[7]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetSessionResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetSessionResponse) ProtoMessage() {}
+
+func (x *GetSessionResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_API_session_proto_msgTypes[7]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetSessionResponse.ProtoReflect.Descriptor instead.
+func (*GetSessionResponse) Descriptor() ([]byte, []int) {
+	return file_API_session_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *GetSessionResponse) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *GetSessionResponse) GetDate() string {
+	if x != nil {
+		return x.Date
+	}
+	return ""
+}
+
+func (x *GetSessionResponse) GetUserId() string {
+	if x != nil {
+		return x.UserId
+	}
+	return ""
+}
+
+func (x *GetSessionResponse) GetLifts() []*Lift {
+	if x != nil {
+		return x.Lifts
+	}
+	return nil
+}
+
+type ListSessionsByUserRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	UserId string `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+}
+
+func (x *ListSessionsByUserRequest) Reset() {
+	*x = ListSessionsByUserRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_API_session_proto_msgTypes[8]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *ListSessionsByUserRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListSessionsByUserRequest) ProtoMessage() {}
+
+func (x *ListSessionsByUserRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_API_session_proto_msgTypes[8]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListSessionsByUserRequest.ProtoReflect.Descriptor instead.
+func (*ListSessionsByUserRequest) Descriptor() ([]byte, []int) {
+	return file_API_session_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *ListSessionsByUserRequest) GetUserId() string {
+	if x != nil {
+		return x.UserId
+	}
+	return ""
+}
+
+type ListSessionByUserResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	UserId   string     `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	Sessions []*Session `protobuf:"bytes,2,rep,name=sessions,proto3" json:"sessions,omitempty"`
+}
+
+func (x *ListSessionByUserResponse) Reset() {
+	*x = ListSessionByUserResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_API_session_proto_msgTypes[9]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *ListSessionByUserResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListSessionByUserResponse) ProtoMessage() {}
+
+func (x *ListSessionByUserResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_API_session_proto_msgTypes[9]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListSessionByUserResponse.ProtoReflect.Descriptor instead.
+func (*ListSessionByUserResponse) Descriptor() ([]byte, []int) {
+	return file_API_session_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *ListSessionByUserResponse) GetUserId() string {
+	if x != nil {
+		return x.UserId
+	}
+	return ""
+}
+
+func (x *ListSessionByUserResponse) GetSessions() []*Session {
+	if x != nil {
+		return x.Sessions
+	}
+	return nil
+}
+
 var File_API_session_proto protoreflect.FileDescriptor
 
 var file_API_session_proto_rawDesc = []byte{
@@ -540,52 +655,72 @@ var file_API_session_proto_rawDesc = []byte{
 	0x6e, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x73, 0x65, 0x73, 0x73,
 	0x69, 0x6f, 0x6e, 0x49, 0x64, 0x12, 0x18, 0x0a, 0x07, 0x77, 0x6f, 0x72, 0x6b, 0x6f, 0x75, 0x74,
 	0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x77, 0x6f, 0x72, 0x6b, 0x6f, 0x75, 0x74, 0x12,
-	0x16, 0x0a, 0x06, 0x77, 0x65, 0x69, 0x67, 0x68, 0x74, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52,
+	0x16, 0x0a, 0x06, 0x77, 0x65, 0x69, 0x67, 0x68, 0x74, 0x18, 0x03, 0x20, 0x01, 0x28, 0x03, 0x52,
 	0x06, 0x77, 0x65, 0x69, 0x67, 0x68, 0x74, 0x12, 0x2a, 0x0a, 0x04, 0x66, 0x65, 0x65, 0x6c, 0x18,
 	0x04, 0x20, 0x01, 0x28, 0x0e, 0x32, 0x16, 0x2e, 0x41, 0x64, 0x64, 0x4c, 0x69, 0x66, 0x74, 0x52,
 	0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x2e, 0x66, 0x65, 0x65, 0x6c, 0x65, 0x72, 0x52, 0x04, 0x66,
 	0x65, 0x65, 0x6c, 0x22, 0x30, 0x0a, 0x06, 0x66, 0x65, 0x65, 0x6c, 0x65, 0x72, 0x12, 0x0b, 0x0a,
 	0x07, 0x55, 0x4e, 0x4b, 0x4e, 0x4f, 0x57, 0x4e, 0x10, 0x00, 0x12, 0x07, 0x0a, 0x03, 0x42, 0x41,
 	0x44, 0x10, 0x01, 0x12, 0x06, 0x0a, 0x02, 0x4f, 0x4b, 0x10, 0x02, 0x12, 0x08, 0x0a, 0x04, 0x47,
-	0x4f, 0x4f, 0x44, 0x10, 0x03, 0x22, 0x11, 0x0a, 0x0f, 0x41, 0x64, 0x64, 0x4c, 0x69, 0x66, 0x74,
-	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0xbb, 0x01, 0x0a, 0x0d, 0x41, 0x64, 0x64,
-	0x52, 0x75, 0x6e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x1d, 0x0a, 0x0a, 0x73, 0x65,
-	0x73, 0x73, 0x69, 0x6f, 0x6e, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09,
-	0x73, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x49, 0x64, 0x12, 0x12, 0x0a, 0x04, 0x74, 0x69, 0x6d,
-	0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x74, 0x69, 0x6d, 0x65, 0x12, 0x1a, 0x0a,
-	0x08, 0x64, 0x69, 0x73, 0x74, 0x61, 0x6e, 0x63, 0x65, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52,
-	0x08, 0x64, 0x69, 0x73, 0x74, 0x61, 0x6e, 0x63, 0x65, 0x12, 0x29, 0x0a, 0x04, 0x66, 0x65, 0x65,
-	0x6c, 0x18, 0x04, 0x20, 0x01, 0x28, 0x0e, 0x32, 0x15, 0x2e, 0x41, 0x64, 0x64, 0x52, 0x75, 0x6e,
-	0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x2e, 0x66, 0x65, 0x65, 0x6c, 0x65, 0x72, 0x52, 0x04,
-	0x66, 0x65, 0x65, 0x6c, 0x22, 0x30, 0x0a, 0x06, 0x66, 0x65, 0x65, 0x6c, 0x65, 0x72, 0x12, 0x0b,
-	0x0a, 0x07, 0x55, 0x4e, 0x4b, 0x4e, 0x4f, 0x57, 0x4e, 0x10, 0x00, 0x12, 0x07, 0x0a, 0x03, 0x42,
-	0x41, 0x44, 0x10, 0x01, 0x12, 0x06, 0x0a, 0x02, 0x4f, 0x4b, 0x10, 0x02, 0x12, 0x08, 0x0a, 0x04,
-	0x47, 0x4f, 0x4f, 0x44, 0x10, 0x03, 0x22, 0x10, 0x0a, 0x0e, 0x41, 0x64, 0x64, 0x52, 0x75, 0x6e,
-	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x76, 0x0a, 0x11, 0x41, 0x64, 0x64, 0x53,
-	0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x32, 0x0a,
-	0x04, 0x74, 0x79, 0x70, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0e, 0x32, 0x1e, 0x2e, 0x41, 0x64,
-	0x64, 0x53, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x2e,
-	0x53, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x54, 0x79, 0x70, 0x65, 0x52, 0x04, 0x74, 0x79, 0x70,
-	0x65, 0x22, 0x2d, 0x0a, 0x0b, 0x53, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x54, 0x79, 0x70, 0x65,
-	0x12, 0x0b, 0x0a, 0x07, 0x55, 0x4e, 0x4b, 0x4e, 0x4f, 0x57, 0x4e, 0x10, 0x00, 0x12, 0x08, 0x0a,
-	0x04, 0x4c, 0x49, 0x46, 0x54, 0x10, 0x01, 0x12, 0x07, 0x0a, 0x03, 0x52, 0x55, 0x4e, 0x10, 0x02,
-	0x22, 0x14, 0x0a, 0x12, 0x41, 0x64, 0x64, 0x53, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x52, 0x65,
-	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x36, 0x0a, 0x07, 0x53, 0x65, 0x73, 0x73, 0x69, 0x6f,
-	0x6e, 0x12, 0x12, 0x0a, 0x04, 0x64, 0x61, 0x74, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52,
-	0x04, 0x64, 0x61, 0x74, 0x65, 0x12, 0x17, 0x0a, 0x07, 0x73, 0x65, 0x73, 0x68, 0x5f, 0x69, 0x64,
-	0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x73, 0x65, 0x73, 0x68, 0x49, 0x64, 0x32, 0xa8,
-	0x01, 0x0a, 0x12, 0x4c, 0x69, 0x66, 0x74, 0x53, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x53, 0x65,
-	0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x37, 0x0a, 0x0a, 0x61, 0x64, 0x64, 0x53, 0x65, 0x73, 0x73,
-	0x69, 0x6f, 0x6e, 0x12, 0x12, 0x2e, 0x41, 0x64, 0x64, 0x53, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e,
-	0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x13, 0x2e, 0x41, 0x64, 0x64, 0x53, 0x65, 0x73,
-	0x73, 0x69, 0x6f, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x12, 0x2e,
-	0x0a, 0x07, 0x61, 0x64, 0x64, 0x4c, 0x69, 0x66, 0x74, 0x12, 0x0f, 0x2e, 0x41, 0x64, 0x64, 0x4c,
-	0x69, 0x66, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x10, 0x2e, 0x41, 0x64, 0x64,
-	0x4c, 0x69, 0x66, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x12, 0x29,
-	0x0a, 0x06, 0x61, 0x64, 0x64, 0x52, 0x75, 0x6e, 0x12, 0x0e, 0x2e, 0x41, 0x64, 0x64, 0x52, 0x75,
-	0x6e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x0f, 0x2e, 0x41, 0x64, 0x64, 0x52, 0x75,
-	0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x42, 0x0a, 0x5a, 0x08, 0x2e, 0x2f, 0x64,
-	0x6f, 0x6d, 0x61, 0x69, 0x6e, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x4f, 0x4f, 0x44, 0x10, 0x03, 0x22, 0x2c, 0x0a, 0x0f, 0x41, 0x64, 0x64, 0x4c, 0x69, 0x66, 0x74,
+	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x19, 0x0a, 0x04, 0x6c, 0x69, 0x66, 0x74,
+	0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x05, 0x2e, 0x4c, 0x69, 0x66, 0x74, 0x52, 0x04, 0x6c,
+	0x69, 0x66, 0x74, 0x22, 0x65, 0x0a, 0x04, 0x4c, 0x69, 0x66, 0x74, 0x12, 0x1d, 0x0a, 0x0a, 0x73,
+	0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52,
+	0x09, 0x73, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x49, 0x64, 0x12, 0x12, 0x0a, 0x04, 0x6c, 0x69,
+	0x66, 0x74, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x6c, 0x69, 0x66, 0x74, 0x12, 0x16,
+	0x0a, 0x06, 0x77, 0x65, 0x69, 0x67, 0x68, 0x74, 0x18, 0x03, 0x20, 0x01, 0x28, 0x03, 0x52, 0x06,
+	0x77, 0x65, 0x69, 0x67, 0x68, 0x74, 0x12, 0x12, 0x0a, 0x04, 0x66, 0x65, 0x65, 0x6c, 0x18, 0x04,
+	0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x66, 0x65, 0x65, 0x6c, 0x22, 0x2c, 0x0a, 0x11, 0x41, 0x64,
+	0x64, 0x53, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12,
+	0x17, 0x0a, 0x07, 0x75, 0x73, 0x65, 0x72, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09,
+	0x52, 0x06, 0x75, 0x73, 0x65, 0x72, 0x49, 0x64, 0x22, 0x38, 0x0a, 0x12, 0x41, 0x64, 0x64, 0x53,
+	0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x22,
+	0x0a, 0x07, 0x53, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32,
+	0x08, 0x2e, 0x53, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x52, 0x07, 0x53, 0x65, 0x73, 0x73, 0x69,
+	0x6f, 0x6e, 0x22, 0x6c, 0x0a, 0x07, 0x53, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x12, 0x12, 0x0a,
+	0x04, 0x64, 0x61, 0x74, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x64, 0x61, 0x74,
+	0x65, 0x12, 0x17, 0x0a, 0x07, 0x73, 0x65, 0x73, 0x68, 0x5f, 0x69, 0x64, 0x18, 0x02, 0x20, 0x01,
+	0x28, 0x09, 0x52, 0x06, 0x73, 0x65, 0x73, 0x68, 0x49, 0x64, 0x12, 0x17, 0x0a, 0x07, 0x75, 0x73,
+	0x65, 0x72, 0x5f, 0x69, 0x64, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x75, 0x73, 0x65,
+	0x72, 0x49, 0x64, 0x12, 0x1b, 0x0a, 0x05, 0x6c, 0x69, 0x66, 0x74, 0x73, 0x18, 0x04, 0x20, 0x03,
+	0x28, 0x0b, 0x32, 0x05, 0x2e, 0x4c, 0x69, 0x66, 0x74, 0x52, 0x05, 0x6c, 0x69, 0x66, 0x74, 0x73,
+	0x22, 0x23, 0x0a, 0x11, 0x47, 0x65, 0x74, 0x53, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x52, 0x65,
+	0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28,
+	0x09, 0x52, 0x02, 0x69, 0x64, 0x22, 0x6e, 0x0a, 0x12, 0x47, 0x65, 0x74, 0x53, 0x65, 0x73, 0x73,
+	0x69, 0x6f, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x0e, 0x0a, 0x02, 0x69,
+	0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x02, 0x69, 0x64, 0x12, 0x12, 0x0a, 0x04, 0x64,
+	0x61, 0x74, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x64, 0x61, 0x74, 0x65, 0x12,
+	0x17, 0x0a, 0x07, 0x75, 0x73, 0x65, 0x72, 0x5f, 0x69, 0x64, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09,
+	0x52, 0x06, 0x75, 0x73, 0x65, 0x72, 0x49, 0x64, 0x12, 0x1b, 0x0a, 0x05, 0x6c, 0x69, 0x66, 0x74,
+	0x73, 0x18, 0x04, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x05, 0x2e, 0x4c, 0x69, 0x66, 0x74, 0x52, 0x05,
+	0x6c, 0x69, 0x66, 0x74, 0x73, 0x22, 0x34, 0x0a, 0x19, 0x4c, 0x69, 0x73, 0x74, 0x53, 0x65, 0x73,
+	0x73, 0x69, 0x6f, 0x6e, 0x73, 0x42, 0x79, 0x55, 0x73, 0x65, 0x72, 0x52, 0x65, 0x71, 0x75, 0x65,
+	0x73, 0x74, 0x12, 0x17, 0x0a, 0x07, 0x75, 0x73, 0x65, 0x72, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20,
+	0x01, 0x28, 0x09, 0x52, 0x06, 0x75, 0x73, 0x65, 0x72, 0x49, 0x64, 0x22, 0x5a, 0x0a, 0x19, 0x4c,
+	0x69, 0x73, 0x74, 0x53, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x42, 0x79, 0x55, 0x73, 0x65, 0x72,
+	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x17, 0x0a, 0x07, 0x75, 0x73, 0x65, 0x72,
+	0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x75, 0x73, 0x65, 0x72, 0x49,
+	0x64, 0x12, 0x24, 0x0a, 0x08, 0x73, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x73, 0x18, 0x02, 0x20,
+	0x03, 0x28, 0x0b, 0x32, 0x08, 0x2e, 0x53, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x52, 0x08, 0x73,
+	0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x73, 0x32, 0xfe, 0x01, 0x0a, 0x12, 0x4c, 0x69, 0x66, 0x74,
+	0x53, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x35,
+	0x0a, 0x0a, 0x61, 0x64, 0x64, 0x53, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x12, 0x12, 0x2e, 0x41,
+	0x64, 0x64, 0x53, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
+	0x1a, 0x13, 0x2e, 0x41, 0x64, 0x64, 0x53, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x52, 0x65, 0x73,
+	0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x2c, 0x0a, 0x07, 0x61, 0x64, 0x64, 0x4c, 0x69, 0x66, 0x74,
+	0x12, 0x0f, 0x2e, 0x41, 0x64, 0x64, 0x4c, 0x69, 0x66, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73,
+	0x74, 0x1a, 0x10, 0x2e, 0x41, 0x64, 0x64, 0x4c, 0x69, 0x66, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f,
+	0x6e, 0x73, 0x65, 0x12, 0x35, 0x0a, 0x0a, 0x47, 0x65, 0x74, 0x53, 0x65, 0x73, 0x73, 0x69, 0x6f,
+	0x6e, 0x12, 0x12, 0x2e, 0x47, 0x65, 0x74, 0x53, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x52, 0x65,
+	0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x13, 0x2e, 0x47, 0x65, 0x74, 0x53, 0x65, 0x73, 0x73, 0x69,
+	0x6f, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x4c, 0x0a, 0x12, 0x4c, 0x69,
+	0x73, 0x74, 0x53, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x73, 0x42, 0x79, 0x55, 0x73, 0x65, 0x72,
+	0x12, 0x1a, 0x2e, 0x4c, 0x69, 0x73, 0x74, 0x53, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x73, 0x42,
+	0x79, 0x55, 0x73, 0x65, 0x72, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1a, 0x2e, 0x4c,
+	0x69, 0x73, 0x74, 0x53, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x42, 0x79, 0x55, 0x73, 0x65, 0x72,
+	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x42, 0x0a, 0x5a, 0x08, 0x2e, 0x2f, 0x64, 0x6f,
+	0x6d, 0x61, 0x69, 0x6e, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -600,35 +735,41 @@ func file_API_session_proto_rawDescGZIP() []byte {
 	return file_API_session_proto_rawDescData
 }
 
-var file_API_session_proto_enumTypes = make([]protoimpl.EnumInfo, 3)
-var file_API_session_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
+var file_API_session_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
+var file_API_session_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
 var file_API_session_proto_goTypes = []interface{}{
-	(AddLiftRequestFeeler)(0),          // 0: AddLiftRequest.feeler
-	(AddRunRequestFeeler)(0),           // 1: AddRunRequest.feeler
-	(AddSessionRequest_SessionType)(0), // 2: AddSessionRequest.SessionType
-	(*AddLiftRequest)(nil),             // 3: AddLiftRequest
-	(*AddLiftResponse)(nil),            // 4: AddLiftResponse
-	(*AddRunRequest)(nil),              // 5: AddRunRequest
-	(*AddRunResponse)(nil),             // 6: AddRunResponse
-	(*AddSessionRequest)(nil),          // 7: AddSessionRequest
-	(*AddSessionResponse)(nil),         // 8: AddSessionResponse
-	(*Session)(nil),                    // 9: Session
+	(AddLiftRequestFeeler)(0),         // 0: AddLiftRequest.feeler
+	(*AddLiftRequest)(nil),            // 1: AddLiftRequest
+	(*AddLiftResponse)(nil),           // 2: AddLiftResponse
+	(*Lift)(nil),                      // 3: Lift
+	(*AddSessionRequest)(nil),         // 4: AddSessionRequest
+	(*AddSessionResponse)(nil),        // 5: AddSessionResponse
+	(*Session)(nil),                   // 6: Session
+	(*GetSessionRequest)(nil),         // 7: GetSessionRequest
+	(*GetSessionResponse)(nil),        // 8: GetSessionResponse
+	(*ListSessionsByUserRequest)(nil), // 9: ListSessionsByUserRequest
+	(*ListSessionByUserResponse)(nil), // 10: ListSessionByUserResponse
 }
 var file_API_session_proto_depIdxs = []int32{
-	0, // 0: AddLiftRequest.feel:type_name -> AddLiftRequest.feeler
-	1, // 1: AddRunRequest.feel:type_name -> AddRunRequest.feeler
-	2, // 2: AddSessionRequest.type:type_name -> AddSessionRequest.SessionType
-	7, // 3: LiftSessionService.addSession:input_type -> AddSessionRequest
-	3, // 4: LiftSessionService.addLift:input_type -> AddLiftRequest
-	5, // 5: LiftSessionService.addRun:input_type -> AddRunRequest
-	8, // 6: LiftSessionService.addSession:output_type -> AddSessionResponse
-	4, // 7: LiftSessionService.addLift:output_type -> AddLiftResponse
-	6, // 8: LiftSessionService.addRun:output_type -> AddRunResponse
-	6, // [6:9] is the sub-list for method output_type
-	3, // [3:6] is the sub-list for method input_type
-	3, // [3:3] is the sub-list for extension type_name
-	3, // [3:3] is the sub-list for extension extendee
-	0, // [0:3] is the sub-list for field type_name
+	0,  // 0: AddLiftRequest.feel:type_name -> AddLiftRequest.feeler
+	3,  // 1: AddLiftResponse.lift:type_name -> Lift
+	6,  // 2: AddSessionResponse.Session:type_name -> Session
+	3,  // 3: Session.lifts:type_name -> Lift
+	3,  // 4: GetSessionResponse.lifts:type_name -> Lift
+	6,  // 5: ListSessionByUserResponse.sessions:type_name -> Session
+	4,  // 6: LiftSessionService.addSession:input_type -> AddSessionRequest
+	1,  // 7: LiftSessionService.addLift:input_type -> AddLiftRequest
+	7,  // 8: LiftSessionService.GetSession:input_type -> GetSessionRequest
+	9,  // 9: LiftSessionService.ListSessionsByUser:input_type -> ListSessionsByUserRequest
+	5,  // 10: LiftSessionService.addSession:output_type -> AddSessionResponse
+	2,  // 11: LiftSessionService.addLift:output_type -> AddLiftResponse
+	8,  // 12: LiftSessionService.GetSession:output_type -> GetSessionResponse
+	10, // 13: LiftSessionService.ListSessionsByUser:output_type -> ListSessionByUserResponse
+	10, // [10:14] is the sub-list for method output_type
+	6,  // [6:10] is the sub-list for method input_type
+	6,  // [6:6] is the sub-list for extension type_name
+	6,  // [6:6] is the sub-list for extension extendee
+	0,  // [0:6] is the sub-list for field type_name
 }
 
 func init() { file_API_session_proto_init() }
@@ -662,7 +803,7 @@ func file_API_session_proto_init() {
 			}
 		}
 		file_API_session_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*AddRunRequest); i {
+			switch v := v.(*Lift); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -674,18 +815,6 @@ func file_API_session_proto_init() {
 			}
 		}
 		file_API_session_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*AddRunResponse); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_API_session_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*AddSessionRequest); i {
 			case 0:
 				return &v.state
@@ -697,7 +826,7 @@ func file_API_session_proto_init() {
 				return nil
 			}
 		}
-		file_API_session_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
+		file_API_session_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*AddSessionResponse); i {
 			case 0:
 				return &v.state
@@ -709,8 +838,56 @@ func file_API_session_proto_init() {
 				return nil
 			}
 		}
-		file_API_session_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
+		file_API_session_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*Session); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_API_session_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GetSessionRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_API_session_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GetSessionResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_API_session_proto_msgTypes[8].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*ListSessionsByUserRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_API_session_proto_msgTypes[9].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*ListSessionByUserResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -727,8 +904,8 @@ func file_API_session_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_API_session_proto_rawDesc,
-			NumEnums:      3,
-			NumMessages:   7,
+			NumEnums:      1,
+			NumMessages:   10,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

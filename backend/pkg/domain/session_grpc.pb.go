@@ -20,7 +20,8 @@ const _ = grpc.SupportPackageIsVersion7
 type LiftSessionServiceClient interface {
 	AddSession(ctx context.Context, in *AddSessionRequest, opts ...grpc.CallOption) (*AddSessionResponse, error)
 	AddLift(ctx context.Context, in *AddLiftRequest, opts ...grpc.CallOption) (*AddLiftResponse, error)
-	AddRun(ctx context.Context, in *AddRunRequest, opts ...grpc.CallOption) (*AddRunResponse, error)
+	GetSession(ctx context.Context, in *GetSessionRequest, opts ...grpc.CallOption) (*GetSessionResponse, error)
+	ListSessionsByUser(ctx context.Context, in *ListSessionsByUserRequest, opts ...grpc.CallOption) (*ListSessionByUserResponse, error)
 }
 
 type liftSessionServiceClient struct {
@@ -49,9 +50,18 @@ func (c *liftSessionServiceClient) AddLift(ctx context.Context, in *AddLiftReque
 	return out, nil
 }
 
-func (c *liftSessionServiceClient) AddRun(ctx context.Context, in *AddRunRequest, opts ...grpc.CallOption) (*AddRunResponse, error) {
-	out := new(AddRunResponse)
-	err := c.cc.Invoke(ctx, "/LiftSessionService/addRun", in, out, opts...)
+func (c *liftSessionServiceClient) GetSession(ctx context.Context, in *GetSessionRequest, opts ...grpc.CallOption) (*GetSessionResponse, error) {
+	out := new(GetSessionResponse)
+	err := c.cc.Invoke(ctx, "/LiftSessionService/GetSession", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *liftSessionServiceClient) ListSessionsByUser(ctx context.Context, in *ListSessionsByUserRequest, opts ...grpc.CallOption) (*ListSessionByUserResponse, error) {
+	out := new(ListSessionByUserResponse)
+	err := c.cc.Invoke(ctx, "/LiftSessionService/ListSessionsByUser", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -64,7 +74,8 @@ func (c *liftSessionServiceClient) AddRun(ctx context.Context, in *AddRunRequest
 type LiftSessionServiceServer interface {
 	AddSession(context.Context, *AddSessionRequest) (*AddSessionResponse, error)
 	AddLift(context.Context, *AddLiftRequest) (*AddLiftResponse, error)
-	AddRun(context.Context, *AddRunRequest) (*AddRunResponse, error)
+	GetSession(context.Context, *GetSessionRequest) (*GetSessionResponse, error)
+	ListSessionsByUser(context.Context, *ListSessionsByUserRequest) (*ListSessionByUserResponse, error)
 	mustEmbedUnimplementedLiftSessionServiceServer()
 }
 
@@ -78,8 +89,11 @@ func (UnimplementedLiftSessionServiceServer) AddSession(context.Context, *AddSes
 func (UnimplementedLiftSessionServiceServer) AddLift(context.Context, *AddLiftRequest) (*AddLiftResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddLift not implemented")
 }
-func (UnimplementedLiftSessionServiceServer) AddRun(context.Context, *AddRunRequest) (*AddRunResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method AddRun not implemented")
+func (UnimplementedLiftSessionServiceServer) GetSession(context.Context, *GetSessionRequest) (*GetSessionResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetSession not implemented")
+}
+func (UnimplementedLiftSessionServiceServer) ListSessionsByUser(context.Context, *ListSessionsByUserRequest) (*ListSessionByUserResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListSessionsByUser not implemented")
 }
 func (UnimplementedLiftSessionServiceServer) mustEmbedUnimplementedLiftSessionServiceServer() {}
 
@@ -130,20 +144,38 @@ func _LiftSessionService_AddLift_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
-func _LiftSessionService_AddRun_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(AddRunRequest)
+func _LiftSessionService_GetSession_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetSessionRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(LiftSessionServiceServer).AddRun(ctx, in)
+		return srv.(LiftSessionServiceServer).GetSession(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/LiftSessionService/addRun",
+		FullMethod: "/LiftSessionService/GetSession",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(LiftSessionServiceServer).AddRun(ctx, req.(*AddRunRequest))
+		return srv.(LiftSessionServiceServer).GetSession(ctx, req.(*GetSessionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _LiftSessionService_ListSessionsByUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListSessionsByUserRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(LiftSessionServiceServer).ListSessionsByUser(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/LiftSessionService/ListSessionsByUser",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(LiftSessionServiceServer).ListSessionsByUser(ctx, req.(*ListSessionsByUserRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -164,8 +196,12 @@ var LiftSessionService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _LiftSessionService_AddLift_Handler,
 		},
 		{
-			MethodName: "addRun",
-			Handler:    _LiftSessionService_AddRun_Handler,
+			MethodName: "GetSession",
+			Handler:    _LiftSessionService_GetSession_Handler,
+		},
+		{
+			MethodName: "ListSessionsByUser",
+			Handler:    _LiftSessionService_ListSessionsByUser_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

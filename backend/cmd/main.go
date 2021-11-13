@@ -1,12 +1,14 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"net"
 
 	"github.com/jestradaramos/group-lift/backend/pkg/domain"
 	"github.com/jestradaramos/group-lift/backend/pkg/repo/bun"
+	"github.com/jestradaramos/group-lift/backend/pkg/session"
 	"github.com/jestradaramos/group-lift/backend/pkg/user"
 	"google.golang.org/grpc"
 )
@@ -22,8 +24,11 @@ func main() {
 
 	// Default postgres creds for now
 	db := bun.InitBunDB("postgresql://postgres:postgres@localhost:5432/test?sslmode=disable")
+	db.CreateUserTable(context.Background())
+	db.CreateLiftTables(context.Background())
 
 	domain.RegisterUserServiceServer(grpcServer, user.NewUserServiceServer(db))
+	domain.RegisterLiftSessionServiceServer(grpcServer, session.NewSessionServiceServer(db))
 	fmt.Print(grpcServer.GetServiceInfo())
 
 	err = grpcServer.Serve(lis)

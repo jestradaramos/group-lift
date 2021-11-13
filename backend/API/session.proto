@@ -3,9 +3,11 @@ syntax = "proto3";
 option go_package = "./domain";
 
 service LiftSessionService {
-    rpc addSession(AddSessionRequest) returns (AddSessionResponse){};
-    rpc addLift(AddLiftRequest) returns (AddLiftResponse){};
-    rpc addRun(AddRunRequest) returns (AddRunResponse);
+    rpc addSession(AddSessionRequest) returns (AddSessionResponse);
+    rpc addLift(AddLiftRequest) returns (AddLiftResponse);
+    rpc GetSession(GetSessionRequest) returns (GetSessionResponse);
+    rpc ListSessionsByUser(ListSessionsByUserRequest) returns (ListSessionByUserResponse);
+    // rpc addRun(AddRunRequest) returns (AddRunResponse);
 
 }
 
@@ -19,41 +21,52 @@ message AddLiftRequest {
 
     string session_id = 1;
     string workout = 2;
-    string weight = 3;
+    int64 weight = 3;
     feeler feel = 4;
 }
 
-message AddLiftResponse {}
+message AddLiftResponse {
+    Lift lift = 1;
+}
 
-message AddRunRequest {
-    enum feeler {
-        UNKNOWN = 0;
-        BAD = 1;
-        OK = 2;
-        GOOD = 3;
-    }
-
+message Lift {
     string session_id = 1;
-    string time = 2;
-    string distance = 3;
-    feeler feel = 4;
-}
+    string lift = 2;
+    int64 weight = 3; 
+    string feel = 4;
 
-message AddRunResponse {}
+}
 
 message AddSessionRequest {
-    enum SessionType {
-        UNKNOWN = 0;
-        LIFT = 1;
-        RUN = 2;
-    }
-    SessionType type = 1;
-
+    string user_id = 1;
 }
 
-message AddSessionResponse {}
+message AddSessionResponse {
+    Session Session = 1;
+}
 
 message Session {
     string date = 1;
     string sesh_id = 2;
+    string user_id = 3;
+    repeated Lift lifts = 4;
+}
+
+message GetSessionRequest {
+    string id = 1;
+}
+message GetSessionResponse {
+    string id = 1;
+    string date = 2;
+    string user_id = 3;
+    repeated Lift lifts = 4;
+}
+
+message ListSessionsByUserRequest {
+    string user_id = 1;
+}
+
+message ListSessionByUserResponse {
+    string user_id = 1;
+    repeated Session sessions = 2;
 }

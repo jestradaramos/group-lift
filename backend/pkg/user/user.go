@@ -24,7 +24,7 @@ func NewUserServiceServer(db *bun.DB) *UserService {
 func (u UserService) AddUser(ctx context.Context, req *domain.AddUserRequest) (*domain.AddUserResponse, error) {
 	fmt.Println("We made it in here")
 	user := &models.User{Username: req.Username, Password: req.Password}
-	_, err := u.DB.AddUser(context.Background(), user)
+	user, err := u.DB.AddUser(context.Background(), user)
 	if err != nil {
 		return nil, err
 	}
@@ -36,8 +36,11 @@ func (u UserService) AddUser(ctx context.Context, req *domain.AddUserRequest) (*
 
 func fromModelToDomain(user *models.User) *domain.User {
 	domainUser := domain.User{
-		Username: user.Username,
-		Password: user.Password,
+		Id:         user.ID,
+		Username:   user.Username,
+		Password:   user.Password,
+		HeightInCm: 0,
+		Weight:     0,
 	}
 
 	return &domainUser
